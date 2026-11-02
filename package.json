@@ -4,6 +4,7 @@
 	"description": "Slide thuyết trình Chatbot AdsPlay (chạy trên localhost)",
 	"engines": { "node": ">=18" },
 	"scripts": {
+		"build": "node build.js",
 		"start": "node server.js"
 	}
 }
