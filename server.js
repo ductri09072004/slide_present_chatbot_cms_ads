@@ -3,6 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const PORT = Number(process.env.PORT) || 5180;
+const HOST = process.env.HOST || "0.0.0.0";
 const ROOT = __dirname;
 
 const TYPES = {
@@ -46,6 +47,6 @@ http
 			res.end(data);
 		});
 	})
-	.listen(PORT, "127.0.0.1", () => {
+	.listen(PORT, HOST, () => {
 		console.log(`Slide chatbot: http://localhost:${PORT}`);
 	});
