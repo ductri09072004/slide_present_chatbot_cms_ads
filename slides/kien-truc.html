@@ -89,6 +89,6 @@
 
 <p data-build-in="rise 8 auto" style="position:absolute;left:96px;top:896px;width:1728px;background:#0E1A2B;color:#2FD3B0;border-radius:16px;padding:16px 32px;font-size:28px;font-weight:700;line-height:1.4;text-align:center">Role nào có quyền gọi API nào, chatbot có đúng quyền đó, không hơn.</p>
 
-<p style="position:absolute;left:96px;bottom:48px;width:1728px;font-size:22px;color:#4A5A6A">CMS Copilot · 2 / 3</p>
+<p style="position:absolute;left:96px;bottom:48px;width:1728px;font-size:22px;color:#4A5A6A">CMS Omnibot · 2 / 3</p>
 <aside>Slide này thay cho bốn slide riêng lẻ, nên hãy nói theo các chữ cái. A, model nội bộ: Qwen 3.8 27B do công ty tự vận hành nên dữ liệu ở lại công ty, khoá model chỉ nằm ở gateway. B, danh sách tool cố định: gateway loại tham số sai hoặc thừa, CMS chỉ chạy tool có trong registry, model không bao giờ đưa URL. C, không chạm database: gateway không có driver hay chuỗi kết nối DB, nên model không có chỗ để chạy SQL. D, phân quyền hai lớp: trình duyệt kiểm quyền role rồi gọi API bằng token của chính người dùng, API CMS kiểm lại và trả 403 nếu thiếu quyền. E, ghi an toàn: model chỉ đề xuất, thẻ xác nhận hiện giá trị cũ và mới, chỉ ghi khi người dùng bấm Xác nhận, dùng một lần, hết hạn sau 10 phút, không có tool xoá. Các số 1 đến 8 là một yêu cầu đi qua hệ thống: 1 người dùng hỏi, 2 gateway gửi cho model, 3 model chọn tool, 4 gateway kiểm tra rồi trả tool_calls, 5 trình duyệt gọi API bằng token người dùng, 6 API trả dữ liệu hoặc 403, 7 gửi kết quả cắt gọn lại, 8 model trả lời. Bước 2 đến 7 lặp tối đa 6 vòng.</aside>
 </section>

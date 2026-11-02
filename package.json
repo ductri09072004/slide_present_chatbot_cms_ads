@@ -1,7 +1,7 @@
 {
 	"name": "chatbot-slides",
 	"private": true,
-	"description": "Slide thuyết trình CMS Copilot (chạy trên localhost)",
+	"description": "Slide thuyết trình CMS Omnibot (chạy trên localhost)",
 	"engines": { "node": ">=18" },
 	"scripts": {
 		"build": "node build.js",
