@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chatbot AdsPlay – Slide thuyết trình</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<style>
+	* { box-sizing: border-box; margin: 0; }
+	html { scroll-behavior: smooth; background: #05090f; scroll-snap-type: y mandatory; }
+	.frame { scroll-snap-align: start; scroll-snap-stop: always; }
+	body { background: #05090f; font-family: 'Be Vietnam Pro', Arial, sans-serif; overflow-x: hidden; }
+
+	/* Mỗi slide rộng 1920px được co theo chiều ngang cửa sổ, các slide xếp dọc và cuộn xuống */
+	.frame { position: relative; width: 100%; overflow: hidden; }
+	.slide { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; }
+	.slide aside { display: none; }
+
+	/* Hiệu ứng hiện dần từng khối khi cuộn tới (data-build-in) */
+	.b { opacity: 0; }
+	.b.in { animation-duration: 0.8s; animation-timing-function: cubic-bezier(0.22, 0.8, 0.2, 1); animation-fill-mode: both; }
+	.b.in[data-kind='rise'] { animation-name: b-rise; }
+	.b.in[data-kind='fade'] { animation-name: b-fade; }
+	.b.in[data-kind='pop'] { animation-name: b-pop; }
+	@keyframes b-rise { from { opacity: 0; transform: translateY(44px); } to { opacity: 1; transform: none; } }
+	@keyframes b-fade { from { opacity: 0; } to { opacity: 1; } }
+	@keyframes b-pop { 0% { opacity: 0; transform: scale(0.6); } 70% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: none; } }
+	@media (prefers-reduced-motion: reduce) { .b { opacity: 1; } .b.in { animation: none; } html { scroll-behavior: auto; } }
+
+	.shape-arrow-right { clip-path: polygon(0 28%, 60% 28%, 60% 0, 100% 50%, 60% 100%, 60% 72%, 0 72%); }
+
+	#bar { position: fixed; left: 0; top: 0; height: 4px; width: 0; background: #2fd3b0; z-index: 20; }
+
+	#dots { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 14px; z-index: 20; }
+	#dots button { all: unset; cursor: pointer; width: 14px; height: 14px; border-radius: 50%; background: rgba(159, 176, 190, 0.5); border: 2px solid rgba(5, 9, 15, 0.55); transition: transform 0.25s, background 0.25s; }
+	#dots button:hover, #dots button:focus-visible { transform: scale(1.3); }
+	#dots button.active { background: #2fd3b0; transform: scale(1.35); }
+
+	#hud { position: fixed; right: 20px; bottom: 16px; display: flex; align-items: center; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(14, 26, 43, 0.9); border: 1px solid rgba(159, 176, 190, 0.25); color: #eef2f0; font-size: 14px; z-index: 20; backdrop-filter: blur(6px); }
+	#hud button { all: unset; cursor: pointer; min-width: 34px; height: 34px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; font: inherit; font-size: 14px; }
+	#hud button:hover, #hud button:focus-visible { background: rgba(47, 211, 176, 0.22); }
+	#count { min-width: 52px; text-align: center; font-variant-numeric: tabular-nums; }
+
+	#notes { position: fixed; left: 0; right: 0; bottom: 0; max-height: 34vh; overflow: auto; padding: 18px 90px 22px 28px; background: rgba(5, 9, 15, 0.95); color: #eef2f0; font-size: 18px; line-height: 1.6; border-top: 1px solid rgba(159, 176, 190, 0.25); z-index: 15; display: none; }
+	body.show-notes #notes { display: block; }
+	#notes b { color: #2fd3b0; margin-right: 8px; }
+
+	#loading { position: fixed; inset: 0; display: grid; place-items: center; color: #9fb0be; font-size: 20px; z-index: 30; background: #05090f; }
+	#loading.done { display: none; }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<main id="page"></main>
+<nav id="dots" aria-label="Các slide"></nav>
+<div id="notes"></div>
+<div id="hud">
+	<span id="count"></span>
+	<button id="nt" title="Ghi chú diễn giả (N)">Ghi chú</button>
+	<button id="fs" title="Toàn màn hình (F)">Toàn màn hình</button>
+</div>
+<div id="loading">Đang tải slide…</div>
+
+<script>
+(async () => {
+	const page = document.getElementById('page');
+	const NS = 'http://www.w3.org/2000/svg';
+
+	const ICONS = {
+		Lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+		Trust: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
+	};
+
+	// ---- Chuyển các thẻ x-* của định dạng slide sang HTML/SVG thường ----
+	function convert(section) {
+		for (const c of section.querySelectorAll('x-connector')) {
+			const [x1, y1, x2, y2] = ['x1', 'y1', 'x2', 'y2'].map((a) => parseFloat(c.getAttribute(a)));
+			const head = c.getAttribute('head') || 'end';
+			const color = c.style.color || '#888';
+			const w = parseFloat(c.style.borderWidth) || 2;
+			const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+			const ux = (x2 - x1) / len;
+			const uy = (y2 - y1) / len;
+			const hl = w * 4 + 6;
+			const hw = w * 2.2 + 3;
+			const atStart = head === 'both';
+			const atEnd = head === 'both' || head === 'end';
+			const sx = x1 + (atStart ? ux * hl * 0.8 : 0);
+			const sy = y1 + (atStart ? uy * hl * 0.8 : 0);
+			const ex = x2 - (atEnd ? ux * hl * 0.8 : 0);
+			const ey = y2 - (atEnd ? uy * hl * 0.8 : 0);
+
+			const svg = document.createElementNS(NS, 'svg');
+			svg.setAttribute('width', '1920');
+			svg.setAttribute('height', String(section.offsetHeight || 1080));
+			svg.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none;overflow:visible';
+
+			const line = document.createElementNS(NS, 'line');
+			for (const [k, v] of Object.entries({ x1: sx, y1: sy, x2: ex, y2: ey, stroke: color, 'stroke-width': w })) line.setAttribute(k, v);
+			if (c.style.borderStyle === 'dashed') line.setAttribute('stroke-dasharray', `${w * 2.5} ${w * 2}`);
+			svg.appendChild(line);
+
+			const arrow = (tx, ty, dx, dy) => {
+				const bx = tx - dx * hl;
+				const by = ty - dy * hl;
+				const poly = document.createElementNS(NS, 'polygon');
+				poly.setAttribute('points', `${tx},${ty} ${bx - dy * hw},${by + dx * hw} ${bx + dy * hw},${by - dx * hw}`);
+				poly.setAttribute('fill', color);
+				svg.appendChild(poly);
+			};
+			if (atEnd) arrow(x2, y2, ux, uy);
+			if (atStart) arrow(x1, y1, -ux, -uy);
+
+			if (c.hasAttribute('data-build-in')) svg.setAttribute('data-build-in', c.getAttribute('data-build-in'));
+			c.replaceWith(svg);
+		}
+
+		for (const s of section.querySelectorAll('x-shape')) {
+			const div = document.createElement('div');
+			div.className = `shape-${s.getAttribute('kind')}`;
+			div.setAttribute('style', s.getAttribute('style') || '');
+			if (s.hasAttribute('data-build-in')) div.setAttribute('data-build-in', s.getAttribute('data-build-in'));
+			s.replaceWith(div);
+		}
+
+		for (const i of section.querySelectorAll('x-icon')) {
+			const div = document.createElement('div');
+			div.setAttribute('style', `${i.getAttribute('style') || ''};display:flex;align-items:center;justify-content:center`);
+			const big = parseFloat(i.style.width) > 100;
+			div.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${big ? 1.4 : 1.8}" stroke-linecap="round" stroke-linejoin="round" style="width:${big ? 100 : 62}%;height:${big ? 100 : 62}%">${ICONS[i.getAttribute('name')] || ''}</svg>`;
+			if (i.hasAttribute('data-build-in')) div.setAttribute('data-build-in', i.getAttribute('data-build-in'));
+			i.replaceWith(div);
+		}
+
+		// data-build-in="rise 2 auto" -> lớp .b, kiểu hiệu ứng và thứ tự
+		for (const el of section.querySelectorAll('[data-build-in]')) {
+			const tokens = el.getAttribute('data-build-in').split(/\s+/);
+			el.classList.add('b');
+			el.dataset.kind = ['rise', 'fade', 'pop'].includes(tokens[0]) ? tokens[0] : 'fade';
+			el.dataset.order = tokens.find((t) => /^\d+$/.test(t)) || '1';
+		}
+	}
+
+	// ---- Nạp deck: mỗi slide nằm trong một khung (frame) xếp dọc ----
+	const deck = await (await fetch('deck.json')).json();
+	const pages = await Promise.all(deck.order.map(async (id) => (await fetch(`slides/${id}.html`)).text()));
+
+	const frames = [];
+	const slides = [];
+	const heights = [];
+	const notes = [];
+	for (const html of pages) {
+		const tpl = document.createElement('template');
+		tpl.innerHTML = html.trim();
+		const section = tpl.content.querySelector('section');
+		const aside = section.querySelector('aside');
+		notes.push(aside ? aside.textContent.trim() : '');
+
+		const frame = document.createElement('div');
+		frame.className = 'frame';
+		// Dải trống quanh slide (khi tỉ lệ cửa sổ khác 16:9) lấy màu nền của slide
+		const colors = (section.getAttribute('style') || '').match(/background:[^;]*/)?.[0].match(/#[0-9a-fA-F]{6}/g);
+		if (colors) frame.style.background = colors[colors.length - 1];
+		section.classList.add('slide');
+		frame.appendChild(section);
+		page.appendChild(frame);
+
+		heights.push(section.offsetHeight || 1080);
+		convert(section);
+		frames.push(frame);
+		slides.push(section);
+	}
+	document.getElementById('loading').classList.add('done');
+
+	// ---- Co giãn theo chiều ngang cửa sổ ----
+	// Mỗi slide chiếm đúng một màn hình: co theo cả chiều ngang lẫn chiều dọc, căn giữa
+	function fit() {
+		const w = document.documentElement.clientWidth;
+		const h = innerHeight;
+		slides.forEach((sec, i) => {
+			const s = Math.min(w / 1920, h / heights[i]);
+			sec.style.transform = `scale(${s})`;
+			sec.style.left = `${(w - 1920 * s) / 2}px`;
+			sec.style.top = `${(h - heights[i] * s) / 2}px`;
+			frames[i].style.height = `${h}px`;
+		});
+	}
+	addEventListener('resize', fit);
+	fit();
+
+	// ---- Hiệu ứng hiện dần khi cuộn tới từng khối ----
+	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const seen = new IntersectionObserver((entries) => {
+		const shown = entries.filter((e) => e.isIntersecting).map((e) => e.target)
+			.sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order));
+		const first = shown.length ? Number(shown[0].dataset.order) : 0;
+		shown.forEach((el) => {
+			el.style.animationDelay = reduce ? '0ms' : `${Math.min((Number(el.dataset.order) - first) * 180, 1400)}ms`;
+			el.classList.add('in');
+			seen.unobserve(el);
+		});
+	}, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+	document.querySelectorAll('.b').forEach((el) => seen.observe(el));
+
+	// ---- Điều hướng ----
+	const count = document.getElementById('count');
+	const bar = document.getElementById('bar');
+	const dots = document.getElementById('dots');
+	const notesBox = document.getElementById('notes');
+	let cur = -1;
+
+	const titles = ['Mở đầu', 'Kiến trúc và bảo mật', 'Demo'];
+	const buttons = frames.map((frame, i) => {
+		const b = document.createElement('button');
+		b.title = titles[i] || `Slide ${i + 1}`;
+		b.setAttribute('aria-label', b.title);
+		b.onclick = () => jump(i);
+		dots.appendChild(b);
+		return b;
+	});
+
+	function jump(i, smooth = true) {
+		i = Math.max(0, Math.min(frames.length - 1, i));
+		scrollTo({ top: frames[i].offsetTop, behavior: smooth ? 'smooth' : 'instant' });
+	}
+
+	function update() {
+		const probe = scrollY + innerHeight * 0.4;
+		let i = 0;
+		frames.forEach((f, k) => { if (f.offsetTop <= probe) i = k; });
+		const max = document.documentElement.scrollHeight - innerHeight;
+		bar.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+		if (i === cur) return;
+		cur = i;
+		buttons.forEach((b, k) => b.classList.toggle('active', k === i));
+		count.textContent = `${i + 1} / ${frames.length}`;
+		notesBox.innerHTML = notes[i] ? `<b>Ghi chú:</b>${notes[i].replace(/</g, '&lt;')}` : '';
+		history.replaceState(null, '', `#${i + 1}`);
+	}
+	addEventListener('scroll', update, { passive: true });
+	addEventListener('resize', update);
+
+	const toggleFs = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+	const toggleNotes = () => document.body.classList.toggle('show-notes');
+	document.getElementById('fs').onclick = toggleFs;
+	document.getElementById('nt').onclick = toggleNotes;
+
+	// Mỗi lần bấm phím là một slide (một màn hình)
+	addEventListener('keydown', (e) => {
+		if (e.metaKey || e.ctrlKey || e.altKey) return;
+		const k = e.key;
+		if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'j'].includes(k)) { e.preventDefault(); jump(cur + 1); }
+		else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'k'].includes(k)) { e.preventDefault(); jump(cur - 1); }
+		else if (k === 'Home') { e.preventDefault(); jump(0); }
+		else if (k === 'End') { e.preventDefault(); jump(frames.length - 1); }
+		else if (k === 'f' || k === 'F') toggleFs();
+		else if (k === 'n' || k === 'N') toggleNotes();
+		else if (/^[1-9]$/.test(k)) jump(Number(k) - 1);
+	});
+
+	const start = parseInt(location.hash.slice(1), 10);
+	if (Number.isInteger(start) && start > 1 && start <= frames.length) jump(start - 1, false);
+	update();
+})();
+</script>
+</body>
+</html>

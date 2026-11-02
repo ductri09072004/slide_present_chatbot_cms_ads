@@ -1,0 +1,8 @@
+{
+	"name": "chatbot-slides",
+	"private": true,
+	"description": "Slide thuyết trình Chatbot AdsPlay (chạy trên localhost)",
+	"scripts": {
+		"start": "node server.js"
+	}
+}

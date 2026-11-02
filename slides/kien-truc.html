@@ -1,0 +1,94 @@
+<section id="kien-truc" data-transition="push" style="background:#F4F5F0;color:#0E1A2B;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:72px 96px 160px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#0B7A6B">02 · Kiến trúc và bảo mật</p>
+<h2 style="font-size:56px;font-weight:700;line-height:1.15">Dữ liệu đi đâu, ai kiểm quyền ở đâu</h2>
+
+<div data-build-in="rise 1 auto" style="position:absolute;left:96px;top:250px;width:420px;background:#FFFFFF;border:2px solid #CBD2CB;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.2">Trình duyệt CMS</h3>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Chat UI, thẻ xác nhận</p>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Kiểm role, chạy tool</p>
+</div>
+<div data-build-in="rise 2 auto" style="position:absolute;left:750px;top:250px;width:420px;background:#FFFFFF;border:2px solid #CBD2CB;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.2">Chat Gateway</h3>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Xác thực token</p>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Allowlist, giữ khoá model</p>
+</div>
+<div data-build-in="rise 3 auto" style="position:absolute;left:1404px;top:250px;width:420px;background:#FFFFFF;border:2px solid #CBD2CB;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.2">Model nội bộ</h3>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Qwen 3.8 27B</p>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Chỉ chọn tên tool + tham số</p>
+</div>
+
+<x-connector x1="516" y1="305" x2="750" y2="305" head="end" head-end="filled" data-build-in="fade 2 auto" style="color:#0B7A6B;border-width:3px"></x-connector>
+<x-connector x1="750" y1="375" x2="516" y2="375" head="end" head-end="filled" data-build-in="fade 2 auto" style="color:#0B7A6B;border-width:3px"></x-connector>
+<x-connector x1="1170" y1="305" x2="1404" y2="305" head="end" head-end="filled" data-build-in="fade 3 auto" style="color:#0B7A6B;border-width:3px"></x-connector>
+<x-connector x1="1404" y1="375" x2="1170" y2="375" head="end" head-end="filled" data-build-in="fade 3 auto" style="color:#0B7A6B;border-width:3px"></x-connector>
+<p data-build-in="pop 2 auto" style="position:absolute;left:597px;top:283px;width:72px;height:44px;border-radius:22px;background:#0B7A6B;color:#F4F5F0;font-size:24px;font-weight:700;line-height:44px;text-align:center">1 · 7</p>
+<p data-build-in="pop 2 auto" style="position:absolute;left:597px;top:353px;width:72px;height:44px;border-radius:22px;background:#0B7A6B;color:#F4F5F0;font-size:24px;font-weight:700;line-height:44px;text-align:center">4 · 8</p>
+<p data-build-in="pop 3 auto" style="position:absolute;left:1251px;top:283px;width:72px;height:44px;border-radius:22px;background:#0B7A6B;color:#F4F5F0;font-size:24px;font-weight:700;line-height:44px;text-align:center">2</p>
+<p data-build-in="pop 3 auto" style="position:absolute;left:1251px;top:353px;width:72px;height:44px;border-radius:22px;background:#0B7A6B;color:#F4F5F0;font-size:24px;font-weight:700;line-height:44px;text-align:center">3</p>
+<p data-build-in="fade 2 auto" style="position:absolute;left:516px;top:247px;width:234px;text-align:center;font-size:22px;line-height:1.4;color:#4A5A6A">hỏi · kết quả</p>
+<p data-build-in="fade 2 auto" style="position:absolute;left:516px;top:402px;width:234px;text-align:center;font-size:22px;line-height:1.4;color:#4A5A6A">tool · trả lời</p>
+<p data-build-in="fade 3 auto" style="position:absolute;left:1170px;top:247px;width:234px;text-align:center;font-size:22px;line-height:1.4;color:#4A5A6A">prompt</p>
+<p data-build-in="fade 3 auto" style="position:absolute;left:1170px;top:402px;width:234px;text-align:center;font-size:22px;line-height:1.4;color:#4A5A6A">chọn tool</p>
+
+<x-connector x1="290" y1="419" x2="290" y2="620" head="end" head-end="filled" data-build-in="fade 4 auto" style="color:#0B7A6B;border-width:3px"></x-connector>
+<x-connector x1="430" y1="620" x2="430" y2="419" head="end" head-end="filled" data-build-in="fade 4 auto" style="color:#0B7A6B;border-width:3px"></x-connector>
+<p data-build-in="pop 4 auto" style="position:absolute;left:268px;top:497px;width:44px;height:44px;border-radius:22px;background:#0B7A6B;color:#F4F5F0;font-size:24px;font-weight:700;line-height:44px;text-align:center">5</p>
+<p data-build-in="pop 4 auto" style="position:absolute;left:408px;top:497px;width:44px;height:44px;border-radius:22px;background:#0B7A6B;color:#F4F5F0;font-size:24px;font-weight:700;line-height:44px;text-align:center">6</p>
+<p data-build-in="fade 4 auto" style="position:absolute;left:96px;top:503px;width:160px;text-align:right;font-size:22px;line-height:1.4;color:#4A5A6A">GET + token</p>
+<p data-build-in="fade 4 auto" style="position:absolute;left:462px;top:503px;width:200px;font-size:22px;line-height:1.4;color:#4A5A6A">dữ liệu · 403</p>
+
+<div data-build-in="rise 4 auto" style="position:absolute;left:96px;top:620px;width:420px;background:#E3F4F0;border:3px solid #0B7A6B;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.2">API CMS</h3>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Kiểm quyền theo role</p>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Thiếu quyền thì trả 403</p>
+</div>
+<x-connector x1="516" y1="705" x2="750" y2="705" head="end" head-end="filled" data-build-in="fade 5 auto" style="color:#5B6B7A;border-width:3px"></x-connector>
+<p data-build-in="fade 5 auto" style="position:absolute;left:516px;top:662px;width:234px;text-align:center;font-size:22px;line-height:1.4;color:#4A5A6A">chỉ CMS</p>
+<div data-build-in="rise 5 auto" style="position:absolute;left:750px;top:645px;width:420px;background:#ECEEE9;border:2px dashed #8A98A5;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.2;color:#4A5A6A">Database</h3>
+<p style="font-size:22px;line-height:1.4;color:#4A5A6A">Chỉ CMS truy cập</p>
+</div>
+<x-connector x1="960" y1="419" x2="960" y2="645" head="none" data-build-in="fade 6 auto" style="color:#C4382E;border-width:3px;border-style:dashed"></x-connector>
+<x-icon name="Lock" data-build-in="pop 6 auto" style="position:absolute;left:936px;top:508px;width:48px;height:48px;color:#C4382E;background:#F4F5F0;border-radius:24px"></x-icon>
+<p data-build-in="pop 6 auto" style="position:absolute;left:1004px;top:510px;width:44px;height:44px;border-radius:22px;background:#D9962A;color:#0E1A2B;font-size:24px;font-weight:700;line-height:44px;text-align:center">C</p>
+<p data-build-in="fade 6 auto" style="position:absolute;left:1062px;top:516px;width:260px;font-size:24px;font-weight:700;line-height:1.4;color:#C4382E;white-space:nowrap">Không có đường nối</p>
+
+<div data-build-in="rise 6 auto" style="position:absolute;left:1404px;top:620px;width:420px;background:#0E1A2B;color:#EEF2F0;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.2;color:#2FD3B0">Thao tác ghi</h3>
+<p style="font-size:22px;line-height:1.4">Đề xuất → thẻ xác nhận</p>
+<p style="font-size:22px;line-height:1.4">Bấm Xác nhận mới ghi</p>
+</div>
+
+<p data-build-in="pop 1 auto" style="position:absolute;left:482px;top:228px;width:44px;height:44px;border-radius:22px;background:#D9962A;color:#0E1A2B;font-size:24px;font-weight:700;line-height:44px;text-align:center">D</p>
+<p data-build-in="pop 2 auto" style="position:absolute;left:1136px;top:228px;width:44px;height:44px;border-radius:22px;background:#D9962A;color:#0E1A2B;font-size:24px;font-weight:700;line-height:44px;text-align:center">B</p>
+<p data-build-in="pop 3 auto" style="position:absolute;left:1790px;top:228px;width:44px;height:44px;border-radius:22px;background:#D9962A;color:#0E1A2B;font-size:24px;font-weight:700;line-height:44px;text-align:center">A</p>
+<p data-build-in="pop 4 auto" style="position:absolute;left:482px;top:598px;width:44px;height:44px;border-radius:22px;background:#D9962A;color:#0E1A2B;font-size:24px;font-weight:700;line-height:44px;text-align:center">D</p>
+<p data-build-in="pop 6 auto" style="position:absolute;left:1790px;top:598px;width:44px;height:44px;border-radius:22px;background:#D9962A;color:#0E1A2B;font-size:24px;font-weight:700;line-height:44px;text-align:center">E</p>
+
+<div data-build-in="fade 7 auto" style="position:absolute;left:96px;top:830px;width:320px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="width:36px;height:36px;border-radius:18px;background:#D9962A;color:#0E1A2B;font-size:22px;font-weight:700;line-height:36px;text-align:center;flex:none">A</p>
+<p style="font-size:22px;font-weight:600;line-height:1.4">Model nội bộ</p>
+</div>
+<div data-build-in="fade 7 auto" style="position:absolute;left:448px;top:830px;width:320px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="width:36px;height:36px;border-radius:18px;background:#D9962A;color:#0E1A2B;font-size:22px;font-weight:700;line-height:36px;text-align:center;flex:none">B</p>
+<p style="font-size:22px;font-weight:600;line-height:1.4">Tool cố định</p>
+</div>
+<div data-build-in="fade 7 auto" style="position:absolute;left:800px;top:830px;width:320px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="width:36px;height:36px;border-radius:18px;background:#D9962A;color:#0E1A2B;font-size:22px;font-weight:700;line-height:36px;text-align:center;flex:none">C</p>
+<p style="font-size:22px;font-weight:600;line-height:1.4">Không chạm DB</p>
+</div>
+<div data-build-in="fade 7 auto" style="position:absolute;left:1152px;top:830px;width:320px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="width:36px;height:36px;border-radius:18px;background:#D9962A;color:#0E1A2B;font-size:22px;font-weight:700;line-height:36px;text-align:center;flex:none">D</p>
+<p style="font-size:22px;font-weight:600;line-height:1.4">Phân quyền 2 lớp</p>
+</div>
+<div data-build-in="fade 7 auto" style="position:absolute;left:1504px;top:830px;width:320px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="width:36px;height:36px;border-radius:18px;background:#D9962A;color:#0E1A2B;font-size:22px;font-weight:700;line-height:36px;text-align:center;flex:none">E</p>
+<p style="font-size:22px;font-weight:600;line-height:1.4">Ghi an toàn</p>
+</div>
+
+<p data-build-in="rise 8 auto" style="position:absolute;left:96px;top:896px;width:1728px;background:#0E1A2B;color:#2FD3B0;border-radius:16px;padding:16px 32px;font-size:28px;font-weight:700;line-height:1.4;text-align:center">Role nào có quyền gọi API nào, chatbot có đúng quyền đó, không hơn.</p>
+
+<p style="position:absolute;left:96px;bottom:48px;width:1728px;font-size:22px;color:#4A5A6A">Chatbot AdsPlay · 2 / 3</p>
+<aside>Slide này thay cho bốn slide riêng lẻ, nên hãy nói theo các chữ cái. A, model nội bộ: Qwen 3.8 27B do công ty tự vận hành nên dữ liệu ở lại công ty, khoá model chỉ nằm ở gateway. B, danh sách tool cố định: gateway loại tham số sai hoặc thừa, CMS chỉ chạy tool có trong registry, model không bao giờ đưa URL. C, không chạm database: gateway không có driver hay chuỗi kết nối DB, nên model không có chỗ để chạy SQL. D, phân quyền hai lớp: trình duyệt kiểm quyền role rồi gọi API bằng token của chính người dùng, API CMS kiểm lại và trả 403 nếu thiếu quyền. E, ghi an toàn: model chỉ đề xuất, thẻ xác nhận hiện giá trị cũ và mới, chỉ ghi khi người dùng bấm Xác nhận, dùng một lần, hết hạn sau 10 phút, không có tool xoá. Các số 1 đến 8 là một yêu cầu đi qua hệ thống: 1 người dùng hỏi, 2 gateway gửi cho model, 3 model chọn tool, 4 gateway kiểm tra rồi trả tool_calls, 5 trình duyệt gọi API bằng token người dùng, 6 API trả dữ liệu hoặc 403, 7 gửi kết quả cắt gọn lại, 8 model trả lời. Bước 2 đến 7 lặp tối đa 6 vòng.</aside>
+</section>
